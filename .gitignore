@@ -1,0 +1,6 @@
+*.zip
+qa-trades.csv
+qa.cjs
+engine.js
+.playwright-cli/
+node_modules/
