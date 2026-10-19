@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111715">
-<meta name="description" content="用模擬行情練習短線交易。即時 SVG K 線、MA5/10、Z-score 與損益曲線，單一 HTML 離線可用。">
+<meta name="description" content="可選正態、Student’s t、t-GARCH 與跳躍行情的短線交易遊戲。SVG K 線、MA5/10、Z-score 與損益曲線，單一 HTML 離線可用。">
 <title>PULSE TRADER — 短線交易實驗室</title>
 <style>
 :root{color-scheme:dark;--bg:#101512;--panel:#171d19;--panel2:#1c231e;--line:#2a332c;--muted:#85968a;--text:#e5ede5;--lime:#ccf582;--green:#80cfa9;--red:#ef9c91;--gold:#ddbd7e;--blue:#95bde5;--mono:Consolas,"SFMono-Regular",monospace;--sans:"Segoe UI","Microsoft JhengHei",sans-serif}
@@ -17,6 +17,7 @@
 .order{padding:20px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:19px}.section-title h2{font-size:14px;margin:0;font-weight:500}.section-title .eyebrow{font-size:9px;letter-spacing:1px}.order-label{display:flex;justify-content:space-between;margin-bottom:9px;font-size:11px;color:#a7b4a8}.order-label small{font-size:10px;color:var(--muted)}.field{position:relative}.field input{background:#101711;border:1px solid #344035;color:var(--text);border-radius:6px;min-width:0;width:100%;padding:11px 32px 11px 12px;font:14px var(--mono)}.field input:disabled{opacity:.5}.field>span{position:absolute;right:12px;top:13px;font:11px var(--mono);color:var(--muted)}.size-presets{display:flex;gap:5px;margin-top:8px;margin-bottom:20px}.size-presets button{flex:1;background:#222c24;border:1px solid var(--line);color:var(--muted);border-radius:4px;font:10px var(--mono);padding:6px 0}.size-presets button[aria-pressed=true]{border-color:#7c9857;background:#2a3822;color:var(--lime)}.risk-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.risk-note{font-size:10px;color:var(--muted);line-height:1.7;margin:9px 0 17px}.order-summary{font:11px var(--mono);color:var(--muted);display:flex;justify-content:space-between;margin-bottom:15px}.order-summary strong{font-weight:400;color:var(--text)}.trade-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.trade-btn{padding:12px 4px;border-radius:6px;font:600 13px var(--mono);line-height:1.4}.trade-btn small{font:10px var(--sans);display:block;margin-top:3px;opacity:.8}.long{background:var(--lime);color:#1e3017}.short{background:#3a2925;color:#efafa4;border:1px solid #6b453a}.order-divider{border:0;border-top:1px solid var(--line);margin:22px 0 18px}.position-heading{display:flex;justify-content:space-between;align-items:center;font-size:12px}.position-badge{border:1px solid #354638;border-radius:4px;padding:3px 6px;font:9px var(--mono);color:var(--muted)}.empty-position{display:grid;place-items:center;text-align:center;min-height:132px;color:var(--muted)}.empty-position svg{width:33px;height:33px;color:#586e59;margin:17px 0 3px}.empty-position p{font-size:11px;margin:6px 0}.empty-position small{font-size:10px;color:#667b6a}.position-detail{padding:15px 0 5px}.position-pnl{font:28px var(--mono);letter-spacing:-1px;margin-bottom:15px}.position-pnl small{font:10px var(--mono);letter-spacing:0}.position-row{display:flex;justify-content:space-between;gap:8px;margin:10px 0;font-size:10px;color:var(--muted)}.position-row span:last-child{font-family:var(--mono);color:var(--text)}.close-btn{margin-top:10px;padding:11px;width:100%;font-size:12px;border:1px solid #667d5d;border-radius:6px;background:#283524;color:var(--lime)}.lock-note{font-size:10px;color:var(--muted);margin:11px 0 0;line-height:1.6}.market-settings{margin-top:14px;padding:17px 18px;border:1px solid var(--line);border-radius:10px}.settings-head{font-size:11px;margin-bottom:14px;display:flex;justify-content:space-between}.setting-row{display:flex;justify-content:space-between;align-items:center;margin-top:11px;font-size:10px;color:var(--muted)}.seed-row input{width:80px;background:#171f18;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:5px;font:11px var(--mono)}
 .history{margin-top:18px}.history-head{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid var(--line)}.history-head h2{margin:0;font-size:13px;font-weight:500}.history-head h2 span{font:10px var(--mono);color:var(--muted);margin-left:8px}.history-head .ghost{padding:6px 10px;font-size:10px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap;font:11px var(--mono)}th{font:10px var(--sans);color:var(--muted);font-weight:400;text-align:right;padding:12px 20px;background:#141b16}th:first-child,td:first-child{text-align:left}td{padding:13px 20px;border-top:1px solid #263029;text-align:right}td.side-long{color:var(--green)}td.side-short{color:var(--red)}.history-empty{text-align:center;padding:29px 15px;font-size:11px;color:var(--muted)}.history-empty span{color:#b5c3b5}.footer{display:flex;justify-content:space-between;gap:20px;margin-top:18px;color:#768b79;font-size:10px;line-height:1.8}.footer .mono{font-size:9px;letter-spacing:1px;text-align:right}.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);padding:13px 21px;background:#e0edcc;color:#23331e;border-radius:8px;box-shadow:0 8px 40px #0006;z-index:5;opacity:0;pointer-events:none;transition:.2s;font-size:12px;max-width:90vw}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.error{background:#f2cbc2;color:#542f27}
 dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radius:14px;max-width:600px;width:calc(100% - 40px);padding:28px;box-shadow:0 30px 120px #0008}dialog::backdrop{background:#050a07c9;backdrop-filter:blur(3px)}dialog h2{font-size:21px;margin-top:0}dialog p,dialog li{font-size:12px;line-height:1.9;color:#b0c0b1}dialog strong{color:var(--lime);font-weight:500}dialog ul{padding-left:18px}dialog .dialog-close{float:right;background:#2b3928;border-radius:5px;padding:7px 10px}dialog .formula{border:1px solid var(--line);background:#101812;padding:13px;font:11px var(--mono);line-height:1.9;border-radius:7px;color:var(--green)}.help-steps{display:flex;gap:8px;margin:20px 0}.help-steps div{flex:1;border:1px solid #344831;border-radius:7px;padding:12px;font-size:11px;line-height:1.8}.help-steps b{display:block;font:18px var(--mono);color:var(--lime);margin-bottom:5px}[hidden]{display:none!important}
+.setting-row{gap:8px}#model{width:174px;max-width:calc(100% - 52px)}.model-description{color:#b9cbb3;margin:12px 0 8px;min-height:34px}.slippage-note{color:var(--gold)}
 @media(min-width:1600px){.chart{height:340px}.indicator .chart{height:110px}.indicator.pnl .chart{height:124px}}
 @media(max-width:1120px){.app{padding:22px 22px 20px 89px}.workspace{grid-template-columns:minmax(0,1fr) 270px;gap:12px}.order{padding:16px}.stat{padding:16px}.stat-value{font-size:22px}.chart{height:280px}.chart-head .ohlc{gap:7px}.chart-head{font-size:9px}.sim-time{display:none}.market-toolbar,.market-header{padding-left:16px;padding-right:16px}.stat-value small{display:block;margin-top:5px}}
 @media(max-width:860px){.rail{display:none}.app{padding:20px}.workspace{grid-template-columns:minmax(0,1fr) 260px}.intro h1{font-size:24px}.session{display:none}.topbar{margin-bottom:24px}.top-actions .chip{display:none}.stats{gap:8px}.stat{padding:14px}.stat-value{font-size:20px}.legend{gap:7px;font-size:9px}.market-toolbar{padding:11px}.chart-head{margin:0 11px 4px}.chart{height:270px}.ohlc>span:nth-child(2),.ohlc>span:nth-child(3){display:none}.sim-controls{padding:10px}.sim-controls .compact-select{width:60px}}
@@ -37,7 +38,7 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
 </section>
 <div class="workspace">
 <section class="market" aria-label="市場圖表">
-<header class="market-header"><div class="asset"><div class="asset-icon">∿</div><div class="asset-name">SIM / USDT<small>合成行情 · 無槓桿 · 單一持倉</small></div></div><div class="quote" id="quote">100.0000<small id="quoteChange">本根 K 線 +0.00%</small></div></header>
+<header class="market-header"><div class="asset"><div class="asset-icon">∿</div><div class="asset-name">SIM / USDT<small>合成行情 · <span id="activeModelName">正態分布</span></small></div></div><div class="quote" id="quote">100.0000<small id="quoteChange">本根 K 線 +0.00%</small></div></header>
 <div class="market-toolbar"><div class="segmented" aria-label="K 線週期"><button data-interval="1s" aria-pressed="false">1s</button><button data-interval="1m" aria-pressed="true">1m</button></div><div class="legend"><span><i></i>MA 5 <span id="ma5Value">—</span></span><span><i class="ma10"></i>MA 10 <span id="ma10Value">—</span></span></div></div>
 <div class="chart-head"><span class="ohlc" id="ohlcReadout">O — H — L — C —</span><span id="barCountdown">1m / 即時</span></div>
 <div class="chart-wrap"><svg id="priceChart" class="chart" role="img" aria-label="即時 K 線圖與五期十期移動平均線"></svg></div>
@@ -53,14 +54,17 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
 <hr class="order-divider"><div class="position-heading"><span>目前持倉</span><span class="position-badge" id="positionBadge">NO POSITION</span></div><div id="emptyPosition" class="empty-position"><div><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7 13h26v21H7zM13 13V8h14v5M7 21h26m-16-2h6v5h-6z"/></svg><p>等待一個好時機</p><small>先觀察，再決定你的方向</small></div></div>
 <div class="position-detail" id="positionDetail" hidden><div class="position-pnl" id="positionPnl">+0.00 <small>USDT</small></div><div class="position-row"><span>進場價格</span><span id="entryPrice">—</span></div><div class="position-row"><span>持倉數量</span><span id="positionQty">—</span></div><div class="position-row"><span>止盈價格</span><span id="tpPrice">—</span></div><div class="position-row"><span>止損價格</span><span id="slPrice">—</span></div><button class="close-btn" id="closeBtn">平倉 · CLOSE POSITION</button><p class="lock-note">一次只開一倉，平倉後即可開始下一筆交易。</p></div>
 </section>
-<section class="market-settings" aria-label="行情生成設定"><div class="settings-head"><span>行情實驗設定</span><span class="eyebrow">SANDBOX</span></div><div class="setting-row"><label for="model">生成模型</label><select id="model" class="compact-select"><option value="normal">正態分布</option></select></div><div class="setting-row"><label for="volatility">波動程度 / σ</label><select id="volatility" class="compact-select"><option value="0.0003">低 · 0.03%</option><option value="0.0006" selected>標準 · 0.06%</option><option value="0.0012">高 · 0.12%</option></select></div><div class="setting-row seed-row"><label for="seedInput">隨機種子</label><input id="seedInput" aria-label="隨機種子，重新開始後生效" type="number" min="1" max="999999" step="1" value="42"></div><p class="risk-note" style="margin-bottom:0">每秒對數報酬服從正態分布。<br>同種子與設定可重播；種子在重新開始後生效。</p></section>
+<section class="market-settings" aria-label="行情生成設定"><div class="settings-head"><span>行情實驗設定</span><span class="eyebrow">SANDBOX</span></div><div class="setting-row"><label for="model">生成模型</label><select id="model" class="compact-select" aria-describedby="modelDescription"><option value="normal">正態分布 · 基礎</option><option value="student">Student’s t · 厚尾</option><option value="garch">t-GARCH · 波動叢聚</option><option value="jump">t-GARCH＋跳躍</option></select></div><p id="modelDescription" class="risk-note model-description" aria-live="polite">每秒對數報酬呈正態分布，波動尺度固定。</p><div class="setting-row"><label for="volatility">基準波動 / σ</label><select id="volatility" class="compact-select"><option value="0.0003">低 · 0.03%</option><option value="0.0006" selected>標準 · 0.06%</option><option value="0.0012">高 · 0.12%</option></select></div><div class="setting-row seed-row"><label for="seedInput">隨機種子</label><input id="seedInput" aria-label="隨機種子，重新開始後生效" type="number" min="1" max="999999" step="1" value="42"></div><p class="risk-note" style="margin-bottom:0">切換模型只影響未來行情，持倉會保留。<br>若要整段套用新模型，選好後按「重新開始」。同種子、設定與操作時點可重播。</p></section>
 </aside>
 </div>
 <section class="history"><div class="history-head"><h2>交易紀錄 <span id="historyCount">0 TRADES</span></h2><button class="ghost" id="exportBtn" disabled>↓ 匯出 CSV</button></div><div class="table-scroll" id="historyTable" hidden><table><thead><tr><th>方向 / 編號</th><th>進場時間</th><th>進場價格</th><th>平倉價格</th><th>倉位金額</th><th>損益 USDT</th><th>出場原因</th></tr></thead><tbody id="tradesBody"></tbody></table></div><div class="history-empty" id="historyEmpty">你的第一筆交易，從一個判斷開始。<span> 開倉後在此留下紀錄。</span></div></section>
-<footer class="footer"><span>模擬交易遊戲 · 所有價格與資金皆為虛構。未計手續費與滑價，遊戲結果不代表真實市場表現。</span><span class="mono">BUILT TO EXPERIMENT.<br>VIBE CODED · SVG POWERED</span></footer>
+<footer class="footer"><span>模擬交易遊戲 · 價格與資金皆為虛構，模型未經真實市場校準。未計手續費；跳躍模式含止損滑價。</span><span class="mono">BUILT TO EXPERIMENT.<br>VIBE CODED · SVG POWERED</span></footer>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<dialog id="helpDialog" aria-labelledby="helpTitle"><button class="dialog-close" id="helpClose" aria-label="關閉說明">✕</button><div class="eyebrow">A LITTLE PRACTICE, A BETTER PROCESS.</div><h2 id="helpTitle">你的交易練習場</h2><p>從 <strong>10,000 USDT</strong> 開始，觀察隨機生成的合成市場。沒有預知走勢，只有每一次的選擇。</p><div class="help-steps"><div><b>01</b>觀察 K 線、均線<br>與價格的偏離程度</div><div><b>02</b>設定倉位與風險<br>選擇 Long 或 Short</div><div><b>03</b>平倉檢視損益<br>練習下一次決策</div></div><ul><li><strong>1s / 1m</strong>：同一條逐秒行情的不同聚合週期，切換會保留持倉。最右側 K 線尚在形成。</li><li><strong>MA5 / MA10</strong>：目前圖表週期最近 5 / 10 根收盤價的簡單平均，含正在形成的 K 線。</li><li><strong>Z-score 20</strong>：最近 20 根收盤價的偏離程度。±2 為觀察線，並不保證價格反轉。</li><li><strong>止盈 / 止損</strong>：留白不啟用；輸入須大於 0 且小於 100%。模擬價格穿越時依設定價成交。</li><li><strong>PnL</strong>：總損益 = 已實現 + 未實現。做空也需以開倉金額作為保證金，無槓桿。淨值歸零會強制結算。</li><li><strong>控制</strong>：暫停後可按「+1 秒」；1× / 10× / 60× 表示每個真實秒推進的模擬秒數。背景分頁不追趕時間。</li><li><strong>重新開始</strong>：清除本局交易。資料僅保留於本頁記憶體，關閉或重新整理會重置；可先匯出 CSV。</li></ul><div class="formula">Z = (目前收盤價 − MA20) / 最近20根的母體標準差<br>Long PnL = 數量 × (平倉價 − 進場價)<br>Short PnL = 數量 × (進場價 − 平倉價)</div><p class="muted">快捷鍵：空白鍵 暫停／繼續 · L 做多 · S 做空 · X 平倉<br>圖表只顯示最近 90 根 K 線；損益曲線最多顯示最近 5,000 個記錄點。</p></dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle">
+<button class="dialog-close" id="helpClose" aria-label="關閉說明">✕</button><div class="eyebrow">A LITTLE PRACTICE, A BETTER PROCESS.</div><h2 id="helpTitle">你的交易練習場</h2><p>從 <strong>10,000 USDT</strong> 開始，觀察隨機生成的合成市場。沒有預知走勢，只有每一次的選擇。</p><div class="help-steps"><div><b>01</b>觀察 K 線、均線<br>與價格的偏離程度</div><div><b>02</b>設定倉位與風險<br>選擇 Long 或 Short</div><div><b>03</b>平倉檢視損益<br>練習下一次決策</div></div>
+<ul><li><strong>行情模型</strong>：正態為固定尺度波動；Student’s t 增加厚尾；t-GARCH 讓平靜與劇烈波動交替；t-GARCH＋跳躍再加入突發價格衝擊。模型切換保留行情、資金與持倉，只影響接下來的價格；按「重新開始」可用目前模型生成整段新行情。</li><li><strong>1s / 1m</strong>：同一條逐秒行情的不同聚合週期，切換會保留持倉。最右側 K 線尚在形成。</li><li><strong>MA5 / MA10</strong>：目前圖表週期最近 5 / 10 根收盤價的簡單平均，含正在形成的 K 線。</li><li><strong>Z-score 20</strong>：最近 20 根收盤價的偏離程度。±2 為觀察線，並不保證價格反轉；厚尾與動態波動也會改變極端值的出現頻率。</li><li><strong>止盈 / 止損</strong>：留白不啟用；輸入須大於 0 且小於 100%。一般波動依設定價成交；瞬間跳躍穿越止損時按跳躍後價格成交，紀錄標示滑價。跳躍止盈仍以設定價成交。所有模式均未計手續費或其他成交成本。</li><li><strong>PnL</strong>：總損益 = 已實現 + 未實現。做空也需以開倉金額作為保證金，無槓桿。淨值歸零會強制結算，損失最多為帳戶餘額。</li><li><strong>控制</strong>：暫停後可按「+1 秒」；1× / 10× / 60× 表示每個真實秒推進的模擬秒數。背景分頁不追趕時間。</li><li><strong>重新開始</strong>：清除本局交易，套用目前的模型、基準波動與種子。資料僅保留於本頁記憶體，關閉或重新整理會重置；可先匯出 CSV。</li></ul>
+<div class="formula">Z = (目前收盤價 − MA20) / 最近20根的母體標準差<br>Long PnL = 數量 × (平倉價 − 進場價)<br>Short PnL = 數量 × (進場價 − 平倉價)</div><p class="muted">模型是未經真實標的校準的教學設定；波動叢聚不代表漲跌方向可以預測。厚尾模型設有單秒對數報酬 ±20% 的數值上限，價格範圍為 0.000001～1,000,000,000。<br>快捷鍵：空白鍵 暫停／繼續 · L 做多 · S 做空 · X 平倉<br>圖表只顯示最近 90 根 K 線；損益曲線最多顯示最近 5,000 個記錄點。</p></dialog>
 <script>
 (function (root) {
   'use strict';
@@ -71,7 +75,8 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       initialBalance = 10000,
       initialPrice = 100,
       volatility = 0.0006,
-      warmupSeconds = 7200
+      warmupSeconds = 7200,
+      model = 'normal'
     } = {}) {
       if (!Number.isFinite(initialBalance) || initialBalance <= 0) {
         throw new Error('初始餘額必須是大於 0 的有限數字。');
@@ -85,12 +90,19 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       if (!Number.isInteger(warmupSeconds) || warmupSeconds < 0) {
         throw new Error('預熱秒數必須是大於或等於 0 的整數。');
       }
+      if (!['normal', 'student', 'garch', 'jump'].includes(model)) {
+        throw new Error('價格模型必須是 normal、student、garch 或 jump。');
+      }
 
       this.initialBalance = initialBalance;
       this._balance = initialBalance;
       this._price = initialPrice;
       this._time = 0;
       this._volatility = volatility;
+      this._model = model;
+      this._lastJump = 0;
+      this._preJumpPrice = null;
+      this._resetGarchState();
       this._seed = seed >>> 0;
       this._rngState = this._seed || 0x6d2b79f5;
       this._normalSpare = null;
@@ -98,6 +110,8 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       this._trades = [];
       this._ticks = [{ time: 0, open: initialPrice, high: initialPrice, low: initialPrice, close: initialPrice }];
       this._lastTickPrice = initialPrice;
+      this._tickHigh = initialPrice;
+      this._tickLow = initialPrice;
       this._equityHistory = [];
       this._nextTradeId = 1;
 
@@ -116,10 +130,22 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
     get price() { return this._price; }
     get time() { return this._time; }
     get balance() { return this._balance; }
+    get model() { return this._model; }
+    set model(value) {
+      if (!['normal', 'student', 'garch', 'jump'].includes(value)) {
+        throw new Error('價格模型必須是 normal、student、garch 或 jump。');
+      }
+      if (value === this._model) return;
+      this._model = value;
+      this._resetGarchState();
+    }
+    get lastJump() { return this._lastJump; }
     get volatility() { return this._volatility; }
     set volatility(value) {
       if (!Number.isFinite(value) || value < 0) throw new Error('波動率必須是大於或等於 0 的有限數字。');
+      if (value === this._volatility) return;
       this._volatility = value;
+      this._resetGarchState();
     }
     get equity() { return this._balance + this.unrealizedPnl; }
     get unrealizedPnl() {
@@ -130,6 +156,11 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
     get position() { return this._position ? { ...this._position } : null; }
     get trades() { return this._trades.map((trade) => ({ ...trade })); }
     get equityHistory() { return this._equityHistory.map((point) => ({ ...point })); }
+
+    _resetGarchState() {
+      this._garchVariance = this._volatility * this._volatility;
+      this._garchPreviousShock = 0;
+    }
 
     _random() {
       // Mulberry32: small, fast, deterministic, and sufficient for simulation.
@@ -155,9 +186,62 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       return magnitude * Math.cos(angle);
     }
 
+    _studentT6() {
+      let squaredNormals = 0;
+      for (let i = 0; i < 6; i += 1) squaredNormals += this._normal() ** 2;
+      if (squaredNormals === 0) return this._studentT6();
+      return this._normal() / Math.sqrt(squaredNormals / 6) * Math.sqrt(4 / 6);
+    }
+
     _advancePrice() {
       const sigma = this._volatility;
-      this._price *= Math.exp(-0.5 * sigma * sigma + sigma * this._normal());
+      this._preJumpPrice = null;
+      this._lastJump = 0;
+      this._tickHigh = this._price;
+      this._tickLow = this._price;
+      if (this._model === 'normal') {
+        // Keep the original drift-compensated Gaussian path and its RNG sequence intact.
+        this._price *= Math.exp(-0.5 * sigma * sigma + sigma * this._normal());
+        if (!Number.isFinite(this._price) || this._price <= 0) this._price = 1e-6;
+        else this._price = Math.min(1e9, Math.max(1e-6, this._price));
+        this._tickHigh = Math.max(this._tickHigh, this._price);
+        this._tickLow = Math.min(this._tickLow, this._price);
+        this._time += 1;
+        return;
+      }
+
+      const alpha = 0.08;
+      const beta = 0.90;
+      const omega = (1 - alpha - beta) * sigma * sigma;
+      const variance = this._model === 'garch' || this._model === 'jump'
+        ? omega + alpha * this._garchPreviousShock ** 2 + beta * this._garchVariance
+        : sigma * sigma;
+      const innovation = this._studentT6();
+      const baseLogReturn = Math.sqrt(Math.max(0, variance)) * innovation;
+      if (this._model === 'garch' || this._model === 'jump') {
+        // Feed only the t-GARCH base innovation back into variance; jumps are independent.
+        this._garchPreviousShock = Math.sqrt(Math.max(0, variance)) * innovation;
+        this._garchVariance = variance;
+      }
+
+      const jump = this._model === 'jump' && this._random() < 1 / 600
+        ? this._normal() * 8 * sigma
+        : 0;
+      // These models use zero-mean log returns (no -0.5*sigma^2 correction).
+      // The cap protects against extreme t tails; prices are then bounded to safe finite values.
+      const clampedBaseReturn = Math.max(-0.20, Math.min(0.20, baseLogReturn));
+      const clampedTotalReturn = Math.max(-0.20, Math.min(0.20, baseLogReturn + jump));
+      const oldPrice = this._price;
+      const boundedPrice = (price) => Math.min(1e9, Math.max(1e-6, price));
+      const basePrice = boundedPrice(oldPrice * Math.exp(clampedBaseReturn));
+      const finalPrice = boundedPrice(oldPrice * Math.exp(clampedTotalReturn));
+      this._price = finalPrice;
+      this._tickHigh = Math.max(oldPrice, basePrice, finalPrice);
+      this._tickLow = Math.min(oldPrice, basePrice, finalPrice);
+      if (this._model === 'jump' && jump !== 0) {
+        this._preJumpPrice = basePrice;
+        this._lastJump = Math.log(finalPrice / basePrice);
+      }
       this._time += 1;
     }
 
@@ -166,8 +250,8 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       this._ticks.push({
         time: this._time,
         open,
-        high: Math.max(open, this._price),
-        low: Math.min(open, this._price),
+        high: Math.max(open, this._tickHigh, this._price),
+        low: Math.min(open, this._tickLow, this._price),
         close: this._price
       });
       this._lastTickPrice = this._price;
@@ -180,8 +264,16 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       }
       for (let i = 0; i < count; i += 1) {
         const previousPrice = this._price;
+        this._preJumpPrice = null;
         this._advancePrice();
-        if (this._position) this._checkPosition(previousPrice, this._price);
+        if (this._position) {
+          if (this._preJumpPrice !== null) {
+            this._checkPosition(previousPrice, this._preJumpPrice);
+            if (this._position && this._lastJump !== 0) this._checkJumpPosition(this._preJumpPrice, this._price);
+          } else {
+            this._checkPosition(previousPrice, this._price);
+          }
+        }
         this._recordTick();
         this._recordEquity();
       }
@@ -215,6 +307,28 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       // The first threshold encountered along this tick's price path gets the fill.
       candidates.sort((a, b) => Math.abs(a.price - previousPrice) - Math.abs(b.price - previousPrice));
       this.closePosition(candidates[0].reason, candidates[0].price);
+    }
+
+    _checkJumpPosition(previousPrice, nextPrice) {
+      const position = this._position;
+      if (!position) return;
+      const long = position.side === 'long';
+      const crosses = (level) => nextPrice >= previousPrice
+        ? level > previousPrice && level <= nextPrice
+        : level < previousPrice && level >= nextPrice;
+      if (position.tpPrice !== null && crosses(position.tpPrice)) {
+        this.closePosition('tp', position.tpPrice);
+        return;
+      }
+      if (position.slPrice !== null && crosses(position.slPrice)) {
+        const slippage = long
+          ? Math.max(0, position.slPrice - nextPrice)
+          : Math.max(0, nextPrice - position.slPrice);
+        this.closePosition('sl', nextPrice, slippage);
+        return;
+      }
+      const equityAtNext = this._balance + (nextPrice - position.entryPrice) * position.quantity * (long ? 1 : -1);
+      if (equityAtNext <= 0) this.closePosition('liquidation', nextPrice);
     }
 
     _recordEquity() {
@@ -269,9 +383,10 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
       return { ...this._position };
     }
 
-    closePosition(reason = 'manual', fillPrice = this._price) {
+    closePosition(reason = 'manual', fillPrice = this._price, slippage = 0) {
       if (!this._position) throw new Error('目前沒有未平倉部位。');
       if (!Number.isFinite(fillPrice) || fillPrice < 0) throw new Error('平倉價格必須是大於或等於 0 的有限數字。');
+      if (!Number.isFinite(slippage) || slippage < 0) throw new Error('滑價必須是大於或等於 0 的有限數字。');
       const position = this._position;
       const direction = position.side === 'long' ? 1 : -1;
       const oldBalance = this._balance;
@@ -286,6 +401,7 @@ dialog{background:#19231b;color:var(--text);border:1px solid #56694d;border-radi
         quantity: position.quantity,
         notional: position.notional,
         pnl,
+        slippage,
         returnPercent: position.notional === 0 ? 0 : pnl / position.notional * 100,
         reason: String(reason),
         entryTime: position.entryTime,
@@ -360,19 +476,22 @@ const color=function(n){return n>=0?C.up:C.down};
 const setTone=function(el,n){el.classList.toggle('positive',n>=0);el.classList.toggle('negative',n<0)};
 const say=function(message,error=false){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').className='toast show'+(error?' error':'');toastTimer=setTimeout(function(){$('toast').className='toast'},3600)};
 const reasons={manual:'手動平倉',tp:'止盈',sl:'止損',liquidation:'淨值歸零',take_profit:'止盈',stop_loss:'止損'};
+const models={normal:{name:'正態分布',description:'每秒對數報酬呈正態分布，波動尺度固定。'},student:{name:'Student’s t',description:'厚尾分布：多數漲跌小，極端漲跌比正態分布更常見。'},garch:{name:'t-GARCH',description:'厚尾＋動態波動：平靜與劇烈行情會成群出現。'},jump:{name:'t-GARCH＋跳躍',description:'動態波動外再加入突發價格衝擊；跳躍穿越止損時會產生滑價。'}};
+function updateModelInfo(){$('activeModelName').textContent=models[engine.model].name;$('modelDescription').textContent=models[engine.model].description}
+function tradeReason(t){return (reasons[t.reason]||t.reason)+(t.slippage>0?' · 跳躍滑價':'')}
 function reset(){
   const value=$('seedInput').value.trim(),seed=Number(value);
   if(!value||!Number.isInteger(seed)||seed<1||seed>999999){say('隨機種子須為 1 到 999999 的整數',true);return false}
-  engine=new TradingEngine({seed:seed,volatility:Number($('volatility').value)});
+  engine=new TradingEngine({seed:seed,volatility:Number($('volatility').value),model:$('model').value});
   window.game=engine;
   renderedTrades=-1;hoverIndex=null;accumulator=0;lastStamp=0;
   $('sessionSeed').textContent='#'+String(seed).padStart(4,'0');
-  $('sizeInput').value='';$('tpInput').value='';$('slInput').value='';render();return true;
+  $('sizeInput').value='';$('tpInput').value='';$('slInput').value='';updateModelInfo();render();return true;
 }
 function getOrder(){const read=function(id){const input=$(id);if(input.validity.badInput)throw new Error('請輸入有效數字');return input.value.trim()===''?null:Number(input.value)};return {sizePercent:read('sizeInput'),tpPercent:read('tpInput'),slPercent:read('slInput')}}
 function place(side){try{engine.openPosition(side,getOrder());say(side==='long'?'已建立 LONG 做多倉位':'已建立 SHORT 做空倉位');render()}catch(err){say(err.message,true)}}
 function close(){try{const t=engine.closePosition();say('已平倉 · '+signed(t.pnl)+' USDT');render()}catch(err){say(err.message,true)}}
-function advance(count){const before=engine.trades.length;engine.step(count);if(engine.trades.length>before){const t=engine.trades[engine.trades.length-1];say((reasons[t.reason]||t.reason)+' · '+signed(t.pnl)+' USDT')}render()}
+function advance(count){const before=engine.trades.length;engine.step(count);if(engine.trades.length>before){const t=engine.trades[engine.trades.length-1];say(tradeReason(t)+' · '+signed(t.pnl)+' USDT')}render()}
 function setRunning(value){running=value;accumulator=0;lastStamp=0;$('playBtn').textContent=running?'Ⅱ 暫停':'▶ 繼續';$('playBtn').setAttribute('aria-pressed',String(running));$('stepBtn').disabled=running}
 function updatePreview(){const raw=$('sizeInput').value;const n=raw===''?10:Number(raw);$('notionalPreview').textContent=Number.isFinite(n)&&n>0&&n<=100?fmt(engine.balance*n/100)+' USDT':'請輸入 0～100%';document.querySelectorAll('[data-size]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.size)===n))})}
 function render(){
@@ -399,7 +518,7 @@ function renderHistory(){
   if(renderedTrades===engine.trades.length)return;
   renderedTrades=engine.trades.length;
   $('historyCount').textContent=engine.trades.length+' TRADES';$('historyTable').hidden=!engine.trades.length;$('historyEmpty').hidden=!!engine.trades.length;$('exportBtn').disabled=!engine.trades.length;
-  $('tradesBody').innerHTML=engine.trades.slice(-100).reverse().map(function(t){return '<tr><td class="side-'+t.side+'">'+(t.side==='long'?'↗ LONG':'↘ SHORT')+' <span class="muted">#'+String(t.id).padStart(3,'0')+'</span></td><td>'+clock(t.entryTime)+'</td><td>'+fmt(t.entryPrice,4)+'</td><td>'+fmt(t.exitPrice,4)+'</td><td>'+fmt(t.notional)+'</td><td style="color:'+color(t.pnl)+'">'+signed(t.pnl)+'</td><td>'+(reasons[t.reason]||t.reason)+'</td></tr>'}).join('');
+  $('tradesBody').innerHTML=engine.trades.slice(-100).reverse().map(function(t){return '<tr><td class="side-'+t.side+'">'+(t.side==='long'?'↗ LONG':'↘ SHORT')+' <span class="muted">#'+String(t.id).padStart(3,'0')+'</span></td><td>'+clock(t.entryTime)+'</td><td>'+fmt(t.entryPrice,4)+'</td><td>'+fmt(t.exitPrice,4)+'</td><td>'+fmt(t.notional)+'</td><td style="color:'+color(t.pnl)+'">'+signed(t.pnl)+'</td><td'+(t.slippage>0?' class="slippage-note"':'')+'>'+tradeReason(t)+'</td></tr>'}).join('');
   $('historyCount').textContent=engine.trades.length+' TRADES'+(engine.trades.length>100?' · 最近 100 筆':'');
 }
 function box(svg,height){const width=Math.max(280,svg.getBoundingClientRect().width);svg.setAttribute('viewBox','0 0 '+width+' '+height);return {w:width,h:height,l:10,r:73,t:14,b:23,pw:width-83,ph:height-37}}
@@ -451,11 +570,12 @@ function drawPnl(){const svg=$('pnlChart'),b=box(svg,114),history=engine.equityH
   if(points.length===1)s+='<circle cx="'+b.l+'" cy="'+y(0)+'" r="2" fill="'+C.lime+'"/>';
   s+=textAt(b.l,b.h-5,clock(first))+textAt(b.w-b.r,b.h-5,clock(last),'text-anchor="end"');svg.innerHTML=s;
 }
-function exportTrades(){if(!engine.trades.length)return;const header=['ID','Side','Entry time','Exit time','Entry price','Exit price','Quantity','Notional USDT','PnL USDT','Return %','Reason'];const rows=engine.trades.map(function(t){return [t.id,t.side,clock(t.entryTime),clock(t.exitTime),t.entryPrice,t.exitPrice,t.quantity,t.notional,t.pnl,t.returnPercent,reasons[t.reason]||t.reason]});const content='\uFEFF'+[header].concat(rows).map(function(row){return row.join(',')}).join('\r\n');const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='pulse-trades-seed-'+$('sessionSeed').textContent.slice(1)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);say('交易紀錄已匯出 CSV')}
+function exportTrades(){if(!engine.trades.length)return;const header=['ID','Side','Entry time','Exit time','Entry price','Exit price','Quantity','Notional USDT','PnL USDT','Return %','Reason','Stop slippage (USDT per SIM)'];const rows=engine.trades.map(function(t){return [t.id,t.side,clock(t.entryTime),clock(t.exitTime),t.entryPrice,t.exitPrice,t.quantity,t.notional,t.pnl,t.returnPercent,tradeReason(t),t.slippage||0]});const content='\uFEFF'+[header].concat(rows).map(function(row){return row.join(',')}).join('\r\n');const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='pulse-trades-seed-'+$('sessionSeed').textContent.slice(1)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);say('交易紀錄已匯出 CSV')}
 $('longBtn').addEventListener('click',function(){place('long')});$('shortBtn').addEventListener('click',function(){place('short')});$('closeBtn').addEventListener('click',close);$('orderForm').addEventListener('submit',function(e){e.preventDefault()});$('playBtn').addEventListener('click',function(){setRunning(!running)});$('stepBtn').addEventListener('click',function(){if(!running)advance(1)});$('sizeInput').addEventListener('input',updatePreview);
 document.querySelectorAll('[data-size]').forEach(function(b){b.addEventListener('click',function(){$('sizeInput').value=b.dataset.size;updatePreview()})});
 document.querySelectorAll('[data-interval]').forEach(function(b){b.addEventListener('click',function(){interval=b.dataset.interval;hoverIndex=null;document.querySelectorAll('[data-interval]').forEach(function(el){el.setAttribute('aria-pressed',String(el===b))});renderCharts()})});
-$('volatility').addEventListener('change',function(){engine.volatility=Number(this.value);say('波動設定已套用於接下來的行情')});$('speed').addEventListener('change',function(){accumulator=0;lastStamp=0});$('resetBtn').addEventListener('click',function(){if(confirm('重新開始會清除本局持倉、損益與交易紀錄。確定重置？')){if(reset())say('新的一局，從 10,000 USDT 開始')}});$('exportBtn').addEventListener('click',exportTrades);
+$('model').addEventListener('change',function(){engine.model=this.value;updateModelInfo();say('已切換 '+models[engine.model].name+'，只影響接下來的行情')});
+$('volatility').addEventListener('change',function(){engine.volatility=Number(this.value);say('基準波動設定已套用於接下來的行情')});$('speed').addEventListener('change',function(){accumulator=0;lastStamp=0});$('resetBtn').addEventListener('click',function(){if(confirm('重新開始會清除本局持倉、損益與交易紀錄。確定重置？')){if(reset())say('新的一局，從 10,000 USDT 開始')}});$('exportBtn').addEventListener('click',exportTrades);
 let helpWasRunning=false;$('helpBtn').addEventListener('click',function(){helpWasRunning=running;setRunning(false);$('helpDialog').showModal()});$('helpClose').addEventListener('click',function(){$('helpDialog').close()});$('helpDialog').addEventListener('close',function(){setRunning(helpWasRunning)});
 $('priceChart').addEventListener('pointermove',function(e){const rect=this.getBoundingClientRect(),x=e.clientX-rect.left;hoverIndex=Math.max(0,Math.min(lastCandles.length-1,Math.floor((x-10)/(rect.width-83)*lastCandles.length)));drawPrice()});$('priceChart').addEventListener('pointerleave',function(){hoverIndex=null;drawPrice()});
 document.addEventListener('keydown',function(e){if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName)||$('helpDialog').open)return;if(e.code==='Space'){e.preventDefault();setRunning(!running)}else if(e.key.toLowerCase()==='l')place('long');else if(e.key.toLowerCase()==='s')place('short');else if(e.key.toLowerCase()==='x'&&engine.position)close()});
