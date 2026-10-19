@@ -12,7 +12,8 @@
 
 ## 成果連結與附件
 
-- GitHub Pages 網址：**[部署完成後貼上公開網址]**
+- GitHub Pages 網址：**https://jim20020317-lab.github.io/pulse-trader/**
+- GitHub 原始碼：**https://github.com/jim20020317-lab/pulse-trader**
 - 作品截圖：將本資料夾的 `screenshot-desktop.png` 插入作業文字區；亦可選擇 `screenshot-mobile.png`。
 - 規格文件：`SPEC.md`
 - 網頁檔案：`index.html`
@@ -25,4 +26,6 @@
 
 交易功能包含 LONG 做多、SHORT 做空、手動平倉、止盈與止損，一次只能持有一倉且不使用槓桿。倉位留白預設使用已結算資金的 10%，止盈／止損留白則不啟用；風險百分比依進場價的變動計算，穿越門檻時按設定價自動平倉。系統提供帳戶淨值、已實現與未實現損益、勝率、交易紀錄、CSV 匯出、暫停與逐秒推進。支援手機版與鍵盤操作。所有行情皆為虛構，未計手續費與滑價。
 
-請先補齊個人資料，部署後填入實際可開啟的網站網址；截圖請插入文字區，不必上傳 PDF。
+請補齊標題中的學校、學號、系級與姓名；截圖請插入作業文字區，不必上傳 PDF。
+
+![桌面版實際介面截圖](https://jim20020317-lab.github.io/pulse-trader/screenshot-desktop.png)

@@ -1,5 +1,7 @@
 # PULSE TRADER｜短線交易實驗室
 
+**[開始遊戲](https://jim20020317-lab.github.io/pulse-trader/)** · [完整規格](SPEC.md) · [作業繳交文字](SUBMISSION.md)
+
 用正態隨機行情練習 Long / Short 的互動網頁，所有畫面與邏輯均包含於 **index.html**。不需要安裝套件、連線交易所或啟動後端，直接用瀏覽器開啟即可。
 
 ## 操作
@@ -35,3 +37,5 @@
 驗證：`node engine-tests.cjs` 檢查 HTML 內嵌引擎的交易、K 線聚合與指標運算，共 12 組檢查。介面另經本機 Playwright 檢查開平倉、CSV、離線運作及手機版；截圖由實際瀏覽器擷取。
 
 本作品使用虛構行情與資金，僅供操作與學習。
+
+![PULSE TRADER 實際操作畫面](screenshot-desktop.png)
